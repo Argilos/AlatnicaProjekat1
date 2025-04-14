@@ -1,0 +1,133 @@
+CREATE TABLE [dbo].[ALAT](
+    [alat_id] [int] NOT NULL,
+    [ets_id] [varchar](20) NULL,
+    [naziv] [varchar](255) NULL,
+    [bar_kod] [int] NULL,
+    [datum_ulaza] [datetime] NULL,
+    [id_model] [char](10) NULL,
+    [id_proizvodjac] [int] NULL,
+    [id_kategorija] [int] NULL,
+    [id_tip_izdavanja] [int] NULL,
+    [id_status] [int] NULL,
+    [vrijednost] [decimal](18, 2) NULL,
+    [id_kistra] [int] NULL,
+    [id_nalog] [int] NULL,
+    PRIMARY KEY CLUSTERED ([alat_id] ASC)
+);
+
+CREATE TABLE [dbo].[IZDAVANJE](
+    [izdavanje_id] [char](10) NOT NULL,
+    [nalog_id] [char](10) NULL,
+    [datum_od] [datetime] NULL,
+    [datum_do] [datetime] NULL,
+    [status] [bit] NULL,
+    [id_uposlenik] [int] NULL,
+    [id_projekat] [int] NULL,
+    PRIMARY KEY CLUSTERED ([izdavanje_id] ASC),
+    FOREIGN KEY([id_projekat]) REFERENCES [dbo].[PROJEKAT] ([projekat_id]),
+    FOREIGN KEY([id_uposlenik]) REFERENCES [dbo].[UPOSLENIK] ([uposlenik_id])
+);
+
+CREATE TABLE [dbo].[IZDAVANJE_TIP](
+    [tip_id] [int] NOT NULL,
+    [naziv] [char](50) NULL,
+    PRIMARY KEY CLUSTERED ([tip_id] ASC)
+);
+
+CREATE TABLE [dbo].[KATEGORIJA_TIP](
+    [kategorija_id] [int] NOT NULL,
+    [naziv] [char](50) NULL,
+    PRIMARY KEY CLUSTERED ([kategorija_id] ASC)
+);
+CREATE TABLE [dbo].[KISTRA](
+    [kistra_id] [int] NOT NULL,
+    PRIMARY KEY CLUSTERED ([kistra_id] ASC)
+);
+
+CREATE TABLE [dbo].[KOMPANIJA](
+    [kompanija_id] [int] NOT NULL,
+    [kompanija_naziv] [char](50) NULL,
+    [kompanija_longitude] [decimal](18, 0) NULL,
+    [kompanija_latitude] [decimal](18, 0) NULL,
+    [kompanija_telefon] [char](50) NULL,
+    [kompanija_email] [char](50) NULL,
+    [kompanija_kontakt_osoba] [char](50) NULL,
+    [kompanija_kontakt_telefon] [char](50) NULL,
+    [id_tip_kompanije] [int] NULL,
+    PRIMARY KEY CLUSTERED ([kompanija_id] ASC),
+    FOREIGN KEY([id_tip_kompanije]) REFERENCES [dbo].[KOMPANIJA_TIP] ([kompanija_tip_id])
+);
+
+CREATE TABLE [dbo].[KOMPANIJA_TIP](
+    [kompanija_tip_id] [int] NOT NULL,
+    [naziv] [char](50) NULL,
+    PRIMARY KEY CLUSTERED ([kompanija_tip_id] ASC)
+);
+
+CREATE TABLE [dbo].[KORISNIK_TIP](
+    [korisnik_tip_id] [bigint] NOT NULL,
+    [tip] [varchar](50) NULL,
+    PRIMARY KEY CLUSTERED ([korisnik_tip_id] ASC)
+);
+
+
+CREATE TABLE [dbo].[MODEL_TIP](
+    [model_id] [char](50) NOT NULL,
+    [naziv] [char](50) NULL,
+    PRIMARY KEY CLUSTERED ([model_id] ASC)
+);
+
+
+CREATE TABLE [dbo].[PROIZVODJAC_TIP](
+    [proizvodjac_id] [int] NOT NULL,
+    [naziv] [char](50) NULL,
+    PRIMARY KEY CLUSTERED ([proizvodjac_id] ASC)
+);
+
+CREATE TABLE [dbo].[PROJEKAT](
+    [projekat_id] [int] NOT NULL,
+    [ugovor_id] [char](50) NULL,
+    [kompanija] [char](50) NULL,
+    [godina] [int] NULL,
+    PRIMARY KEY CLUSTERED ([projekat_id] ASC)
+);
+
+CREATE TABLE [dbo].[STATUS](
+    [status_id] [int] NOT NULL,
+    [id_stanje] [int] NULL,
+    [id_tip] [int] NULL,
+    PRIMARY KEY CLUSTERED ([status_id] ASC),
+    FOREIGN KEY([id_stanje]) REFERENCES [dbo].[STATUS_STANJE] ([stanje_id]),
+    FOREIGN KEY([id_tip]) REFERENCES [dbo].[STATUS_TIP] ([tip_id])
+);
+
+CREATE TABLE [dbo].[STATUS_STANJE](
+    [stanje_id] [int] NOT NULL,
+    [naziv] [char](50) NULL,
+    PRIMARY KEY CLUSTERED ([stanje_id] ASC)
+);
+
+CREATE TABLE [dbo].[STATUS_TIP](
+    [tip_id] [int] NOT NULL,
+    [naziv] [char](50) NULL,
+    PRIMARY KEY CLUSTERED ([tip_id] ASC)
+);
+
+CREATE TABLE [dbo].[UPOSLENIK](
+    [uposlenik_id] [int] NOT NULL,
+    [uposlenik_ime] [char](50) NULL,
+    [uposlenik_prezime] [char](50) NULL,
+    [uposlenik_jmbg] [char](50) NULL,
+    [uposlenik_broj_licneK] [char](50) NULL,
+    [uposlenik_kontakt] [char](50) NULL,
+    [id_uposlenik_tip] [int] NULL,
+    PRIMARY KEY CLUSTERED ([uposlenik_id] ASC),
+    FOREIGN KEY([id_uposlenik_tip]) REFERENCES [dbo].[UPOSLENIK_TIP] ([tip_id])
+);
+
+CREATE TABLE [dbo].[UPOSLENIK_TIP](
+    [tip_id] [int] NOT NULL,
+    [tip] [char](50) NULL,
+    PRIMARY KEY CLUSTERED ([tip_id] ASC)
+);
+
